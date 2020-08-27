@@ -15,7 +15,18 @@ recognition.continuous = false;
 
 var option = '';
 
+var recognizing = false;
+
 recognition.onresult = function(event) {
+
+    if(option == 'dictation') {        
+        textArea.value = '';
+        for (var i = 0; i < event.results.length; ++i) {          
+                textArea.value += event.results[i][0].transcript;          
+        }
+    }
+    else
+    {
     var last = event.results.length - 1;
     var command = event.results[last][0].transcript;
     message.textContent = 'Voice Input: ' + command + '.';
@@ -30,16 +41,20 @@ recognition.onresult = function(event) {
             setPitch(command);
           break;                  
       }
+    }
+    
 };
 
 function offDictationMode() {
     recognition.interimResults = false;
     recognition.continuous = false;
+    recognizing = false;
 }
 
 function onDictationMode() {
     recognition.interimResults = true;
     recognition.continuous = true;
+    recognizing = true;
 }
 
 recognition.onspeechend = function() {
@@ -52,34 +67,30 @@ recognition.onerror = function(event) {
 
 document.querySelector('#btnRate').addEventListener('click', function(){
     option = 'rate';
-    offDictationMode()
     recognition.start();
 });
 
 document.querySelector('#btnPitch').addEventListener('click', function(){
     option = 'pitch';
-    offDictationMode()
     recognition.start();
 });
 
 document.querySelector('#btnVolume').addEventListener('click', function(){
     option = 'volume';
-    offDictationMode()
     recognition.start();
 });
 
 
 document.querySelector('#btnDic').addEventListener('click', function(){
-    option = 'volume';
-    onDictationMode()
+    if (recognizing) {
+        recognition.stop();
+        offDictationMode();
+        return;
+    }
+    option = 'dictation';
+    onDictationMode();
     recognition.start();
 });
-
-document.querySelector('#btnStop').addEventListener('click', function(){
-    offDictationMode()
-    recognition.stop();
-});
-
 
 function setRate(command) {    
     var rateValue = parseFloat(command.toLowerCase());

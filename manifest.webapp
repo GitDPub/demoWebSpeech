@@ -8,8 +8,9 @@
   },
   "developers": {
     "orginal by": "Chris Mills",
-    "edited by": "Dieter Portanda",
-    "url orignal": "https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API"
+    "updated by": "Dieter Portanda",
+    "url orignal": "https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API",
+    "github": ""
   },
   "default_locale": "en"
 }
